@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NovaShop — AI RAG Chatbot</title>
+  <style>
+    :root { font-family: Segoe UI, Arial, sans-serif; color: #19283a; background: #f5f7fb; }
+    body { margin: 0; padding: 34px 18px; }
+    main { max-width: 760px; margin: auto; }
+    .card { background: white; border: 1px solid #dfe5ed; border-radius: 14px; padding: 22px; margin-top: 16px; }
+    .sub { color: #576879; line-height: 1.5; }
+    label, h2 { font-weight: 600; }
+    textarea { display: block; box-sizing: border-box; width: 100%; padding: 12px; margin: 9px 0; font: inherit; min-height: 75px; border-radius: 9px; border: 1px solid #b7c3d2; }
+    button { background: #175a9c; color: white; border: none; padding: 12px 18px; border-radius: 9px; font-weight: 600; cursor: pointer; }
+    button:disabled { opacity: 0.6; cursor: wait; }
+    pre { background: #f2f5f8; padding: 14px; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .meta { font-size: 13px; color: #586b7d; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>NovaShop AI Chatbot</h1>
+  <p class="sub">Real LLM + semantic retrieval. This is a learning application built for AI QA testing.</p>
+  <section class="card">
+    <label for="question">Customer question</label>
+    <textarea id="question">Can I return my shoes after 20 days?</textarea>
+    <button id="ask">Ask chatbot</button>
+  </section>
+  <section class="card" aria-live="polite">
+    <h2>AI answer</h2>
+    <p id="answer">Submit a question to see the model's answer.</p>
+    <p id="metadata" class="meta"></p>
+  </section>
+  <section class="card">
+    <h2>Retrieved sources</h2>
+    <p id="sources" class="meta">Nothing retrieved yet.</p>
+    <h2>Retrieved context</h2>
+    <pre id="context">Nothing retrieved yet.</pre>
+  </section>
+</main>
+<script>
+  const button = document.querySelector('#ask');
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    document.querySelector('#answer').textContent = 'Retrieving policies and asking the LLM...';
+    document.querySelector('#context').textContent = 'Loading...';
+    document.querySelector('#sources').textContent = '';
+    document.querySelector('#metadata').textContent = '';
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: document.querySelector('#question').value }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Request failed');
+      document.querySelector('#answer').textContent = data.answer;
+      document.querySelector('#context').textContent = data.retrievedContext;
+      document.querySelector('#sources').textContent = data.retrievedSources
+        .map((item) => `${item.name} (similarity: ${item.similarity})`).join(' | ');
+      document.querySelector('#metadata').textContent =
+        `Model: ${data.model} | Response time: ${data.responseTimeMs} ms`;
+    } catch (error) {
+      document.querySelector('#answer').textContent = error.message;
+      document.querySelector('#context').textContent = 'No context available.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

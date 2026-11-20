@@ -1,0 +1,21 @@
+# API keys and environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Playwright generated reports
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+
+# Python environment and cache
+.venv/
+__pycache__/
+.pytest_cache/
+
+# Other generated files
+*.log

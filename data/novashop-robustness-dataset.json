@@ -1,0 +1,58 @@
+
+[
+  {
+    "id": "ROB-03",
+    "category": "Paraphrasing",
+    "input": "What would delivery cost me if my cart is worth eighty dollars?",
+    "expected_behavior": "Explain that delivery costs $10 for an $80 order.",
+    "expected_sources": [
+      "shipping-policy.txt"
+    ]
+  },
+  {
+    "id": "ROB-04",
+    "category": "Typographical Errors",
+    "input": "Can I retrun my shooes after 20 dayz?",
+    "expected_behavior": "Explain that a return after 20 days is within the 30-day window, subject to eligibility conditions.",
+    "expected_sources": [
+      "return-policy.txt"
+    ]
+  },
+  {
+    "id": "ROB-05",
+    "category": "Noisy Input",
+    "input": "Hi, I'm trying to buy some things today. I've checked my cart several times and the total is exactly $100. Could you please explain whether delivery is free?",
+    "expected_behavior": "Explain that an order of exactly $100 incurs a $10 delivery charge.",
+    "expected_sources": [
+      "shipping-policy.txt"
+    ]
+  },
+  {
+    "id": "ROB-06",
+    "category": "Capitalisation and Punctuation",
+    "input": "IS SHIPPING FREE FOR AN ORDER ABOVE $100???",
+    "expected_behavior": "Explain that orders above $100 qualify for free shipping.",
+    "expected_sources": [
+      "shipping-policy.txt"
+    ]
+  },
+  {
+    "id": "ROB-07",
+    "category": "Multi-Intent",
+    "input": "I'm ordering shoes worth $80. What is the delivery fee, and can I return them after 20 days?",
+    "expected_behavior": "Explain the $10 delivery fee and the 30-day return eligibility conditions.",
+    "expected_sources": [
+      "shipping-policy.txt",
+      "return-policy.txt"
+    ]
+  },
+  {
+    "id": "ROB-08",
+    "category": "Ambiguous Input",
+    "input": "Can I return it later?",
+    "expected_behavior": "Explain the general return policy or request clarification without assuming the product or purchase date.",
+    "expected_sources": [
+      "return-policy.txt"
+    ]
+  }
+]
