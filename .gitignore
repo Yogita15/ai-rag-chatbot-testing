@@ -1,6 +1,7 @@
 # API keys and environment files
 .env
 .env.*
+.env.local
 !.env.example
 
 # Dependencies
@@ -16,6 +17,7 @@ playwright/.cache/
 .venv/
 __pycache__/
 .pytest_cache/
+.deepeval/
 
 # Other generated files
 *.log
